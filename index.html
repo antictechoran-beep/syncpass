@@ -23,7 +23,7 @@ main{padding:0 14px 30px;max-width:1200px;margin:auto}
 input,select{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:7px 9px;font:inherit}
 .tw{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:10px}
 table{border-collapse:collapse;width:100%;min-width:560px}
-th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--bd);white-space:nowrap}
+th,td{padding:9px 11px;text-align:start;border-bottom:1px solid var(--bd);white-space:nowrap}
 th{background:var(--bg);color:var(--mut);font-size:13px;position:sticky;top:0}
 tr.cl{cursor:pointer}tr.cl:hover td{background:var(--bg)}
 .ok{color:var(--ok)}.bad{color:var(--bad)}.mut{color:var(--mut)}
@@ -76,6 +76,7 @@ tr.cl{cursor:pointer}tr.cl:hover td{background:var(--bg)}
 <header>
   <h1>🏋️ إدارة الصالة الرياضية</h1>
   <span id="fname" class="mut"></span>
+  <button class="btn" id="lang">🌐 Français</button>
   <button class="btn pri" id="pick">📂 اختيار ملف الإكسل</button>
   <button class="btn hide" id="reload">🔄 تحديث</button>
   <input type="file" id="fi" accept=".xlsx,.xls" class="hide">
@@ -125,6 +126,22 @@ tr.cl{cursor:pointer}tr.cl:hover td{background:var(--bg)}
 <script>
 var $=function(i){return document.getElementById(i)};
 var D={et:[],pa:[],pt:[],ex:[]};
+var L='ar';try{L=localStorage.getItem('gymlang')||'ar'}catch(e){}
+var FR={"إدارة الصالة الرياضية": "Gestion de la salle de sport", "🏋️ إدارة الصالة الرياضية": "🏋️ Gestion de la salle de sport", "📂 اختيار ملف الإكسل": "📂 Choisir le fichier Excel", "🔄 تحديث": "🔄 Actualiser", "مرحباً": "Bienvenue", "اختر ملف الإكسل (SYNC_ANTIC_PASS.xlsx) وسيتم تذكره في المتصفح للمرة القادمة.": "Choisissez le fichier Excel (SYNC_ANTIC_PASS.xlsx). Il sera mémorisé dans le navigateur pour la prochaine fois.", "↩️ فتح الملف المحفوظ": "↩️ Ouvrir le fichier enregistré", "👥 الزبائن": "👥 Clients", "💰 الدفوعات": "💰 Paiements", "✅ الحضور": "✅ Présence", "🧾 المصاريف": "🧾 Dépenses", "📊 احصائيات": "📊 Statistiques", "بحث (الاسم / الهاتف / الكود)": "Recherche (nom / tél / code)", "ابحث...": "Rechercher...", "الحالة": "Statut", "الكل": "Tous", "اشتراك ساري": "Abonnement actif", "منتهي": "Expiré", "عليهم دين": "Avec dette", "الاسم واللقب": "Nom et prénom", "الهاتف": "Téléphone", "تاريخ الميلاد": "Date de naissance", "انتهاء الاشتراك": "Fin d'abonnement", "الحصص المتبقية": "Séances restantes", "كود البطاقة": "Code carte", "الدين": "Dette", "من": "Du", "إلى": "Au", "نوع الاشتراك": "Type d'abonnement", "الاسم": "Nom", "بحث": "Recherche", "كل التواريخ": "Toutes les dates", "تاريخ الاشتراك": "Date d'abonnement", "السعر": "Prix", "تاريخ الانتهاء": "Date de fin", "بحث بالاسم": "Rechercher par nom", "تاريخ الحضور": "Date de présence", "التوقيت": "Heure", "رقم البطاقة": "N° de carte", "التاريخ": "Date", "المبلغ": "Montant", "النوع": "Type", "السبب": "Motif", "العدد: ": "Nombre : ", " (يظهر أول 300 — استعمل البحث)": " (300 premiers affichés — utilisez la recherche)", " — اضغط على زبون لعرض اشتراكاته": " — cliquez sur un client pour voir ses abonnements", " — المجموع: ": " — Total : ", "✖ إغلاق": "✖ Fermer", "لا توجد اشتراكات": "Aucun abonnement", "لا توجد دفوعات": "Aucun paiement", "لا يوجد حضور": "Aucune présence", "لا توجد مصاريف": "Aucune dépense", "عدد الاشتراكات: ": "Nombre d'abonnements : ", "💰 مجموع الدفوعات": "💰 Total des paiements", "عدد الدفوعات": "Nombre de paiements", "يظهر أول 500 صف فقط — المجموع يشمل الكل": "500 premières lignes affichées — le total inclut tout", "عدد الحضور: ": "Nombre de présences : ", " (يظهر أول 500)": " (500 premières affichées)", "لا توجد بيانات": "Aucune donnée", "إجمالي الزبائن": "Total clients", "اشتراكات سارية": "Abonnements actifs", "اشتراكات منتهية": "Abonnements expirés", "إجمالي الديون": "Total des dettes", "مداخيل اليوم": "Recettes du jour", "مداخيل هذا الشهر": "Recettes du mois", "مصاريف هذا الشهر": "Dépenses du mois", "صافي هذا الشهر": "Net du mois", "إجمالي المداخيل": "Total des recettes", "إجمالي المصاريف": "Total des dépenses", "الصافي الكلي": "Net total", "حضور اليوم": "Présences du jour", "حضور هذا الشهر": "Présences du mois", "المداخيل الشهرية (آخر 12 شهر)": "Recettes mensuelles (12 derniers mois)", "أكثر أنواع الاشتراك دخلاً": "Abonnements les plus rentables", "الحضور اليومي (آخر 14 يوم مسجل)": "Présence quotidienne (14 derniers jours)", "أوقات الذروة (حسب الساعة)": "Heures de pointe (par heure)"};
+var O=new Map();
+function t(s){return L==='fr'&&FR[s]?FR[s]:s}
+function apply(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n,a=[];while(n=w.nextNode())a.push(n);
+  a.forEach(function(n){var p=n.parentNode.nodeName;if(p==='SCRIPT'||p==='STYLE')return;var k=n.nodeValue.trim();
+    if(L==='fr'){if(!O.has(n)&&FR[k]){O.set(n,n.nodeValue);n.nodeValue=n.nodeValue.replace(k,FR[k])}}
+    else if(O.has(n)){n.nodeValue=O.get(n);O.delete(n)}});
+  [].forEach.call(root.querySelectorAll('[placeholder]'),function(e){var a=e.getAttribute('data-pa');if(a===null){a=e.getAttribute('placeholder');e.setAttribute('data-pa',a)}e.setAttribute('placeholder',L==='fr'&&FR[a]?FR[a]:a)})}
+function setLang(l){L=l;try{localStorage.setItem('gymlang',l)}catch(e){}
+  document.documentElement.lang=l;document.documentElement.dir=l==='fr'?'ltr':'rtl';
+  document.title=t('إدارة الصالة الرياضية');$('lang').textContent=l==='fr'?'🌐 العربية':'🌐 Français';
+  apply(document.body);$('mod').style.display='none';
+  var o=$('pa').options[0];if(o)o.textContent=t('الكل');
+  if(D.et.length){showAll();if(!$('stat').classList.contains('hide'))stats()}}
+
 var DBN='gymdb',ST='kv';
 function idb(){return new Promise(function(ok,ko){var q=indexedDB.open(DBN,1);q.onupgradeneeded=function(){q.result.createObjectStore(ST)};q.onsuccess=function(){ok(q.result)};q.onerror=function(){ko(q.error)}})}
 function iset(k,v){return idb().then(function(db){return new Promise(function(ok,ko){var t=db.transaction(ST,'readwrite');t.objectStore(ST).put(v,k);t.oncomplete=ok;t.onerror=ko})}).catch(function(){})}
@@ -136,7 +153,7 @@ function dk(d){if(!(d instanceof Date)||isNaN(d))return '';return d.getFullYear(
 function fd(d){if(!(d instanceof Date)||isNaN(d))return '-';return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()}
 function ft(d){if(!(d instanceof Date)||isNaN(d))return '-';return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())}
 function num(v){v=parseFloat(v);return isNaN(v)?0:v}
-function fm(v){return Math.round(v).toLocaleString('en-US')+' دج'}
+function fm(v){return Math.round(v).toLocaleString('en-US')+(L==='fr'?' DA':' دج')}
 function nm(s){return String(s==null?'':s).replace(/_x000D_/g,' ').replace(/[\r\n]+/g,' ').replace(/\s*-+\s*$/,'').trim()}
 function tl(s){return String(s==null?'':s).replace(/-+$/,'').trim()||'-'}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -185,7 +202,7 @@ $('nav').onclick=function(e){var p=e.target.getAttribute('data-p');if(!p)return;
 
 function fill(){
   var s={};D.pa.forEach(function(p){if(p.abon)s[p.abon]=1});
-  $('pa').innerHTML='<option value="">الكل</option>'+Object.keys(s).sort().map(function(a){return '<option>'+esc(a)+'</option>'}).join('');
+  $('pa').innerHTML='<option value="">'+t('الكل')+'</option>'+Object.keys(s).sort().map(function(a){return '<option>'+esc(a)+'</option>'}).join('');
   ['pf','pt','af','at','ef','et'].forEach(function(i){$(i).value=today});
   $('ef').value='';$('et').value='';
 }
@@ -203,16 +220,16 @@ function clients(){
     h+='<tr class="cl" data-id="'+esc(c.cod_p)+'"><td>'+esc(name)+'</td><td>'+esc(tel)+'</td><td>'+fd(c.date_nai)+'</td><td class="'+(act?'ok':'bad')+'">'+fd(end)+'</td><td>'+esc(c.mail)+'</td><td>'+esc(c.cn)+'</td><td class="'+(cr>0?'bad':'')+'">'+(cr?fm(cr):'0')+'</td></tr>';
   });
   $('ct').innerHTML=h;
-  lab($('ct'));$('ci').textContent='العدد: '+n+(n>300?' (يظهر أول 300 — استعمل البحث)':'')+' — اضغط على زبون لعرض اشتراكاته';
+  lab($('ct'));$('ci').textContent=t('العدد: ')+n+(n>300?t(' (يظهر أول 300 — استعمل البحث)'):'')+t(' — اضغط على زبون لعرض اشتراكاته');
 }
 $('cq').oninput=clients;$('cs').onchange=clients;
 $('ct').onclick=function(e){var tr=e.target.closest('tr');if(!tr)return;
   var id=tr.getAttribute('data-id'),c=D.et.filter(function(x){return String(x.cod_p)===id})[0];
   var rows=(D.pm[id]||[]).slice().sort(function(a,b){return b.date_p-a.date_p});
   var tot=0;rows.forEach(function(p){tot+=num(p.montant)});
-  $('modc').innerHTML='<div class="bar"><h3 style="flex:1;margin:0">'+esc(nm(c.nom))+'</h3><button class="btn" id="x">✖ إغلاق</button></div><div class="tw"><table><thead><tr><th>تاريخ الاشتراك</th><th>نوع الاشتراك</th><th>السعر</th><th>تاريخ الانتهاء</th></tr></thead><tbody>'+
-   (rows.map(function(p){return '<tr><td>'+fd(p.date_p)+'</td><td>'+esc(p.abon)+'</td><td>'+fm(num(p.montant))+'</td><td>'+fd(p.date_alerte)+'</td></tr>'}).join('')||'<tr><td colspan="4" class="mut">لا توجد اشتراكات</td></tr>')+
-   '</tbody></table></div><div class="info">عدد الاشتراكات: '+rows.length+' — المجموع: '+fm(tot)+'</div>';
+  $('modc').innerHTML='<div class="bar"><h3 style="flex:1;margin:0">'+esc(nm(c.nom))+'</h3><button class="btn" id="x">'+t('✖ إغلاق')+'</button></div><div class="tw"><table><thead><tr><th>'+t('تاريخ الاشتراك')+'</th><th>'+t('نوع الاشتراك')+'</th><th>'+t('السعر')+'</th><th>'+t('تاريخ الانتهاء')+'</th></tr></thead><tbody>'+
+   (rows.map(function(p){return '<tr><td>'+fd(p.date_p)+'</td><td>'+esc(p.abon)+'</td><td>'+fm(num(p.montant))+'</td><td>'+fd(p.date_alerte)+'</td></tr>'}).join('')||'<tr><td colspan="4" class="mut">'+t('لا توجد اشتراكات')+'</td></tr>')+
+   '</tbody></table></div><div class="info">'+t('عدد الاشتراكات: ')+rows.length+t(' — المجموع: ')+fm(tot)+'</div>';
   $('mod').style.display='flex';lab($('modc').querySelector('tbody'));$('x').onclick=function(){$('mod').style.display='none'}};
 $('mod').onclick=function(e){if(e.target===this)this.style.display='none'};
 
@@ -221,8 +238,8 @@ function pay(){
   var f=$('pf').value,t=$('pt').value,a=$('pa').value,q=$('pq').value.trim().toLowerCase(),n=0,sum=0,h='';
   var r=D.pa.filter(function(p){var k=dk(p.date_p);return (!f||k>=f)&&(!t||k<=t)&&(!a||p.abon===a)&&(!q||nm(p.nom).toLowerCase().indexOf(q)>=0)}).sort(function(x,y){return y.date_p-x.date_p});
   r.forEach(function(p){n++;sum+=num(p.montant);if(n<=500)h+='<tr><td>'+esc(nm(p.nom))+'</td><td>'+fd(p.date_p)+'</td><td>'+esc(p.abon)+'</td><td>'+fm(num(p.montant))+'</td><td>'+fd(p.date_alerte)+'</td></tr>'});
-  $('pb').innerHTML=h||'<tr><td colspan="5" class="mut">لا توجد دفوعات</td></tr>';
-  $('ptot').innerHTML='<div class="k"><span>💰 مجموع الدفوعات</span><b>'+fm(sum)+'</b></div><div class="k"><span>عدد الدفوعات</span><b>'+n+'</b></div>';$('pi').textContent=n>500?'يظهر أول 500 صف فقط — المجموع يشمل الكل':'';lab($('pb'));
+  $('pb').innerHTML=h||'<tr><td colspan="5" class="mut">'+t('لا توجد دفوعات')+'</td></tr>';
+  $('ptot').innerHTML='<div class="k"><span>'+t('💰 مجموع الدفوعات')+'</span><b>'+fm(sum)+'</b></div><div class="k"><span>'+t('عدد الدفوعات')+'</span><b>'+n+'</b></div>';$('pi').textContent=n>500?t('يظهر أول 500 صف فقط — المجموع يشمل الكل'):'';lab($('pb'));
 }
 ['pf','pt','pa','pq'].forEach(function(i){$(i).oninput=pay});
 add('pall',function(){$('pf').value='';$('pt').value='';pay()});
@@ -232,8 +249,8 @@ function att(){
   var f=$('af').value,t=$('at').value,q=$('aq').value.trim().toLowerCase(),n=0,h='';
   var r=D.pt.filter(function(p){var k=dk(p.date_p);return (!f||k>=f)&&(!t||k<=t)&&(!q||nm(p.nom).toLowerCase().indexOf(q)>=0)}).sort(function(x,y){return (y.heure_p||0)-(x.heure_p||0)});
   r.forEach(function(p){n++;if(n<=500)h+='<tr><td>'+esc(nm(p.nom))+'</td><td>'+fd(p.date_p)+'</td><td>'+ft(p.heure_p)+'</td><td>'+esc(p.cb)+'</td></tr>'});
-  $('ab').innerHTML=h||'<tr><td colspan="4" class="mut">لا يوجد حضور</td></tr>';
-  lab($('ab'));$('ai').textContent='عدد الحضور: '+n+(n>500?' (يظهر أول 500)':'');
+  $('ab').innerHTML=h||'<tr><td colspan="4" class="mut">'+t('لا يوجد حضور')+'</td></tr>';
+  lab($('ab'));$('ai').textContent=t('عدد الحضور: ')+n+(n>500?t(' (يظهر أول 500)'):'');
 }
 ['af','at','aq'].forEach(function(i){$(i).oninput=att});
 add('aall',function(){$('af').value='';$('at').value='';att()});
@@ -243,15 +260,15 @@ function exp(){
   var f=$('ef').value,t=$('et').value,n=0,sum=0,h='';
   D.ex.filter(function(p){var k=dk(p.date_depence);return (!f||k>=f)&&(!t||k<=t)}).sort(function(x,y){return y.date_depence-x.date_depence}).forEach(function(p){
     n++;sum+=num(p.montant);h+='<tr><td>'+fd(p.date_depence)+'</td><td>'+fm(num(p.montant))+'</td><td>'+esc(p.type)+'</td><td>'+esc(p.motif)+'</td></tr>'});
-  $('eb').innerHTML=h||'<tr><td colspan="4" class="mut">لا توجد مصاريف</td></tr>';
-  lab($('eb'));$('ei').textContent='العدد: '+n+' — المجموع: '+fm(sum);
+  $('eb').innerHTML=h||'<tr><td colspan="4" class="mut">'+t('لا توجد مصاريف')+'</td></tr>';
+  lab($('eb'));$('ei').textContent=t('العدد: ')+n+t(' — المجموع: ')+fm(sum);
 }
 ['ef','et'].forEach(function(i){$(i).oninput=exp});
 add('eall',function(){$('ef').value='';$('et').value='';exp()});
 
 /* stats */
 function bars(rows,fmt){var mx=Math.max.apply(null,rows.map(function(r){return r[1]}).concat([1]));
-  return rows.map(function(r){return '<div class="r"><i title="'+esc(r[0])+'">'+esc(r[0])+'</i><div style="width:'+Math.max(2,r[1]/mx*55)+'%"></div><u>'+(fmt?fmt(r[1]):r[1])+'</u></div>'}).join('')||'<span class="mut">لا توجد بيانات</span>'}
+  return rows.map(function(r){return '<div class="r"><i title="'+esc(r[0])+'">'+esc(r[0])+'</i><div style="width:'+Math.max(2,r[1]/mx*55)+'%"></div><u>'+(fmt?fmt(r[1]):r[1])+'</u></div>'}).join('')||'<span class="mut">'+t('لا توجد بيانات')+'</span>'}
 function stats(){
   var ym=today.slice(0,7),act=0,debt=0;
   D.et.forEach(function(c){if(c.date_cre instanceof Date&&dk(c.date_cre)>=today)act++;debt+=Math.max(0,num(c.credit))});
@@ -266,15 +283,17 @@ function stats(){
   var days=Object.keys(byD).sort().slice(-14).map(function(k){return [k,byD[k]]});
   var types=Object.keys(byA).map(function(k){return [k,byA[k]]}).sort(function(a,b){return b[1]-a[1]}).slice(0,8);
   var hrs=Object.keys(byH).sort().map(function(k){return [k,byH[k]]});
-  function k(l,v,c){return '<div class="k"><span>'+l+'</span><b class="'+(c||'')+'">'+v+'</b></div>'}
+  function k(l,v,c){return '<div class="k"><span>'+t(l)+'</span><b class="'+(c||'')+'">'+v+'</b></div>'}
   $('stat').innerHTML='<div class="cards">'+k('إجمالي الزبائن',D.et.length)+k('اشتراكات سارية',act,'ok')+k('اشتراكات منتهية',D.et.length-act,'bad')+k('إجمالي الديون',fm(debt),'bad')+
    k('مداخيل اليوم',fm(revT))+k('مداخيل هذا الشهر',fm(revM))+k('مصاريف هذا الشهر',fm(exM))+k('صافي هذا الشهر',fm(revM-exM),revM-exM>=0?'ok':'bad')+
    k('إجمالي المداخيل',fm(rev))+k('إجمالي المصاريف',fm(ex))+k('الصافي الكلي',fm(rev-ex),rev-ex>=0?'ok':'bad')+k('حضور اليوم',aT)+k('حضور هذا الشهر',aM)+'</div>'+
-   '<div class="g2"><div class="box"><h3>المداخيل الشهرية (آخر 12 شهر)</h3>'+bars(months,fm)+'</div>'+
-   '<div class="box"><h3>أكثر أنواع الاشتراك دخلاً</h3>'+bars(types,fm)+'</div>'+
-   '<div class="box"><h3>الحضور اليومي (آخر 14 يوم مسجل)</h3>'+bars(days)+'</div>'+
-   '<div class="box"><h3>أوقات الذروة (حسب الساعة)</h3>'+bars(hrs)+'</div></div>';
+   '<div class="g2"><div class="box"><h3>'+t('المداخيل الشهرية (آخر 12 شهر)')+'</h3>'+bars(months,fm)+'</div>'+
+   '<div class="box"><h3>'+t('أكثر أنواع الاشتراك دخلاً')+'</h3>'+bars(types,fm)+'</div>'+
+   '<div class="box"><h3>'+t('الحضور اليومي (آخر 14 يوم مسجل)')+'</h3>'+bars(days)+'</div>'+
+   '<div class="box"><h3>'+t('أوقات الذروة (حسب الساعة)')+'</h3>'+bars(hrs)+'</div></div>';
 }
+$('lang').onclick=function(){setLang(L==='fr'?'ar':'fr')};
+setLang(L);
 init();
 </script>
 </body>
